@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Análise de Perfil LinkedIn</title>
   <style>
+    :root {
+      --azul-emb: #0047FF;
+      --azul-escuro: #001b44;
+      --amarelo: #ffb703;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #001b44, #0047ff);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -17,11 +23,11 @@
     }
 
     .container {
-      background-color: #ffffff10;
+      background-color: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(15px);
       padding: 40px;
       border-radius: 16px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
       width: 100%;
       max-width: 500px;
       text-align: center;
@@ -32,14 +38,9 @@
       transform: scale(1.01);
     }
 
-    .logo {
-      width: 140px;
-      margin-bottom: 20px;
-    }
-
     h2 {
       font-size: 26px;
-      color: #ffb703;
+      color: var(--amarelo);
       margin-bottom: 10px;
     }
 
@@ -50,7 +51,7 @@
     }
 
     .bionics-tag {
-      background: #ffb703;
+      background: var(--amarelo);
       color: #000;
       display: inline-block;
       padding: 6px 14px;
@@ -81,12 +82,12 @@
       border-radius: 8px;
       border: none;
       margin-bottom: 10px;
-      background-color: #ffffff20;
+      background-color: rgba(255,255,255,0.2);
       color: #fff;
     }
 
     input::file-selector-button {
-      background-color: #004aad;
+      background-color: var(--azul-emb);
       border: none;
       padding: 8px 12px;
       color: white;
@@ -96,8 +97,8 @@
 
     button {
       width: 100%;
-      background-color: #ffb703;
-      color: #000;
+      background-color: var(--azul-emb);
+      color: white;
       padding: 14px;
       border: none;
       border-radius: 8px;
@@ -109,7 +110,7 @@
     }
 
     button:hover {
-      background-color: #ffa500;
+      background-color: #0036cc;
     }
 
     #status {
@@ -126,8 +127,6 @@
 </head>
 <body>
   <div class="container">
-    <img class="logo" src="https://grupoemb.github.io/assets/logo-eumebanco.png" alt="Logo Eu Me Banco" />
-    
     <h2>Você está pronto para o íon Itaú?</h2>
     <h1>Faça uma análise do seu LinkedIn agora!</h1>
 
