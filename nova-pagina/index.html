@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Análise de Perfil LinkedIn</title>
+  <style>
+    :root {
+      --azul-emb: #0047FF;
+      --azul-escuro: #001b44;
+      --amarelo: #ffb703;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #001b44, #0047ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.01);
+    }
+
+    h2 {
+      font-size: 26px;
+      color: var(--amarelo);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .bionics-tag {
+      background: var(--amarelo);
+      color: #000;
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    p {
+      color: #d0d0d0;
+      font-size: 15px;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      color: #ffffff;
+      margin-bottom: 5px;
+      margin-top: 20px;
+    }
+
+    input[type="email"],
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 10px;
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    input::file-selector-button {
+      background-color: var(--azul-emb);
+      border: none;
+      padding: 8px 12px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      background-color: var(--azul-emb);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0036cc;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Você está pronto para a área de Investimentos?</h2>
+    <h1>Faça uma análise do seu LinkedIn agora!</h1>
+
+    <div class="bionics-tag">Powered by Bionic’s by EMB ⚡</div>
+
+    <p>Envie seu perfil em PDF e receba uma análise completa feita pelos <strong>Bionic’s da EMB</strong> sobre sua aderência ao perfil de Especialista em Investimentos.</p>
+
+    <form id="linkedinForm">
+      <label for="email">Seu E-mail:</label>
+      <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+
+      <label for="pdf">Arquivo LinkedIn (PDF):</label>
+      <input type="file" id="pdf" name="pdf" accept="application/pdf" required />
+
+      <button type="submit">🚀 Enviar para Análise</button>
+    </form>
+
+    <div id="status"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("linkedinForm");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const pdf = document.getElementById("pdf").files[0];
+
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("file", pdf);
+
+      try {
+        const response = await fetch("https://grupoemb.app.n8n.cloud/workflow/DYh1yWUvTsfXVId4", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          status.innerText = "✅ Enviado com sucesso! Sua análise chegará em breve no e-mail informado.";
+          form.reset();
+        } else {
+          status.innerText = "❌ Algo deu errado. Tente novamente.";
+        }
+      } catch (error) {
+        status.innerText = "❌ Erro na conexão. Verifique sua internet e tente de novo.";
+      }
+    });
+  </script>
+</body>
+</html>
