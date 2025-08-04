@@ -168,17 +168,6 @@
       to { transform: rotate(360deg); }
     }
 
-    .debug-info {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      font-size: 12px;
-      text-align: left;
-      color: #ccc;
-      display: none;
-    }
-
     @media (max-width: 600px) {
       .container {
         padding: 30px 20px;
@@ -214,14 +203,12 @@
     </form>
 
     <div id="status"></div>
-    <div id="debugInfo" class="debug-info"></div>
   </div>
 
   <script>
     const form = document.getElementById("linkedinForm");
     const status = document.getElementById("status");
     const submitBtn = document.getElementById("submitBtn");
-    const debugInfo = document.getElementById("debugInfo");
 
     // URL do webhook N8N
     const WEBHOOK_URL = "https://grupoemb.app.n8n.cloud/webhook/c77b3955-7bc4-4b20-8ae6-be1bcea55af8";
@@ -236,12 +223,6 @@
           status.style.display = 'none';
         }, 8000);
       }
-    }
-
-    function showDebug(message) {
-      debugInfo.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
-      debugInfo.style.display = 'block';
-      console.log('Debug:', message);
     }
 
     function setLoading(isLoading) {
@@ -259,8 +240,6 @@
     document.getElementById("pdf").addEventListener("change", function(e) {
       const file = e.target.files[0];
       if (file) {
-        showDebug(`Arquivo selecionado: ${file.name} (${(file.size/1024/1024).toFixed(2)}MB)`);
-        
         if (file.type !== 'application/pdf') {
           showStatus('❌ Por favor, selecione apenas arquivos PDF.', 'error');
           e.target.value = '';
@@ -288,7 +267,6 @@
         return;
       }
 
-      showDebug(`Iniciando envio para: ${email}`);
       setLoading(true);
 
       const formData = new FormData();
@@ -296,30 +274,19 @@
       formData.append("file", pdfFile);
 
       try {
-        showDebug('Preparando requisição...');
-        
         const response = await fetch(WEBHOOK_URL, {
           method: "POST",
           body: formData,
-          headers: {
-            // Removendo headers que podem causar problemas de CORS
-            // 'Content-Type': 'multipart/form-data' - deixa o browser definir
-          }
         });
-
-        showDebug(`Resposta recebida: Status ${response.status}`);
 
         if (response.ok) {
           showStatus("✅ Enviado com sucesso! Sua análise chegará em breve no e-mail informado.", 'success');
           form.reset();
-          showDebug('Formulário enviado com sucesso');
         } else {
           throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
         }
 
       } catch (error) {
-        showDebug(`Erro capturado: ${error.message}`);
-        
         if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
           showStatus(`
             ❌ Erro de conexão (CORS). 
@@ -328,23 +295,11 @@
             <br>1. Configure CORS no N8N webhook
             <br>2. Ou acesse direto: <a href="${WEBHOOK_URL}" target="_blank" style="color: var(--amarelo);">Teste o webhook</a>
           `, 'error');
-          
-          showDebug('Erro de CORS - verifique configuração do N8N');
         } else {
           showStatus(`❌ Erro no envio: ${error.message}`, 'error');
         }
       } finally {
         setLoading(false);
-      }
-    });
-
-    // Debug: Testar conectividade no carregamento
-    window.addEventListener('load', async () => {
-      try {
-        showDebug('Página carregada - Sistema pronto');
-        showDebug(`Webhook URL: ${WEBHOOK_URL}`);
-      } catch (error) {
-        showDebug(`Erro na inicialização: ${error.message}`);
       }
     });
 
@@ -358,11 +313,6 @@
       input.addEventListener('blur', function() {
         this.style.transform = 'scale(1)';
       });
-    });
-
-    // Toggle debug info (duplo clique no título)
-    document.querySelector('h2').addEventListener('dblclick', () => {
-      debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
     });
   </script>
 </body>
